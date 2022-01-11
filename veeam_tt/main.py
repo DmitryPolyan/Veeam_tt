@@ -43,12 +43,8 @@ def get_arguments() -> tuple:
 
 def update_repl_content(origin_folder: str, repl_folder: str, origin_name: str) -> None:
     """ Updating changed data """
-    if os.path.isdir(f"{origin_folder}/{origin_name}"):
-        logger.info(f"Checking folder {origin_folder}/{origin_name}")
-        compare_folder_contents(f"{origin_folder}/{origin_name}", f"{repl_folder}/{origin_name}")
-    else:
-        logger.info(f"Copy {origin_folder}/{origin_name} to {repl_folder}")
-        shutil.copy2(f"{origin_folder}/{origin_name}", f"{repl_folder}")
+    logger.info(f"Copy {origin_folder}/{origin_name} to {repl_folder}")
+    shutil.copy2(f"{origin_folder}/{origin_name}", f"{repl_folder}")
 
 
 def append_new_content_int_repl(origin_folder: str, origin_name: str, repl_folder: str) -> None:
@@ -78,8 +74,12 @@ def compare_folder_contents(origin_folder: str, repl_folder: str) -> None:
     for origin_name in content_origin_folder:
         if origin_name in content_repl_folder:
             content_repl_folder.remove(origin_name)
-            if not filecmp.cmp(f"{origin_folder}/{origin_name}", f"{repl_folder}/{origin_name}", shallow=False):
-                update_repl_content(origin_folder, repl_folder, origin_name)
+            if os.path.isdir(f"{origin_folder}/{origin_name}"):
+                logger.info(f"Checking folder {origin_folder}/{origin_name}")
+                compare_folder_contents(f"{origin_folder}/{origin_name}", f"{repl_folder}/{origin_name}")
+            else:
+                if not filecmp.cmp(f"{origin_folder}/{origin_name}", f"{repl_folder}/{origin_name}", shallow=False):
+                    update_repl_content(origin_folder, repl_folder, origin_name)
         elif origin_name not in content_repl_folder:
             append_new_content_int_repl(origin_folder, origin_name, repl_folder)
     del_unnecessary_content(content_repl_folder, repl_folder)
@@ -89,9 +89,10 @@ def main():
     logger.info("Application started")
     origin_folder, repl_folder, timing_for_refresh = get_arguments()
     logger.info(f"origin_folder {origin_folder}, repl_folder {repl_folder}, timing_for_refresh {timing_for_refresh}")
-    while True:
-        time.sleep(timing_for_refresh)
-        compare_folder_contents(origin_folder, repl_folder)
+    # while True:
+    #     time.sleep(timing_for_refresh)
+    #     compare_folder_contents(origin_folder, repl_folder)
+    compare_folder_contents(origin_folder, repl_folder)
 
 
 if __name__ == '__main__':
