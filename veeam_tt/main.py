@@ -1,5 +1,9 @@
 import argparse
 import os
+import app_logger
+
+
+logger = app_logger.get_logger(__name__)
 
 
 def get_arguments() -> tuple:
@@ -19,6 +23,8 @@ def get_arguments() -> tuple:
             return int(timing)
         raise argparse.ArgumentTypeError("Not a number entered")
 
+    logger.info("123123")
+    logger.error("11111")
     parser = argparse.ArgumentParser(
         description="The utility copies files according to the provided configuration file.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
@@ -31,8 +37,10 @@ def get_arguments() -> tuple:
 
 
 def main():
-    print(get_arguments())
+    origin_folder, repl_folder, timing_for_refresh = get_arguments()
 
 
-main()
+if __name__ == '__main__':
+    main()
+
 
