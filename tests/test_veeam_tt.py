@@ -53,4 +53,3 @@ def test_append_new_content_int_repl(folder1, folder2):
     assert os.listdir(folder1) == os.listdir(folder2), "Список файлов в папках разный"
     assert filecmp.cmp(f"{folder1}/Test1/test.txt", f"{folder2}/Test1/test.txt") is True, "Файлы разные"
 
-#
