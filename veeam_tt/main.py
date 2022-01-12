@@ -3,16 +3,16 @@ import os
 import time
 import filecmp
 import shutil
+import sys
+import inspect
 
-# import app_logger
-# logger = app_logger.get_logger(__name__)
+# Solved problem with pytest (ModuleNotFoundError: No module named 'app_logger')
+cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+if cmd_folder not in sys.path:
+    sys.path.insert(0, cmd_folder)
 
-try:
-    import app_logger
-    logger = app_logger.get_logger(__name__)
-except:
-    import veeam_tt.app_logger
-    logger = veeam_tt.app_logger.get_logger(__name__)
+import app_logger
+logger = app_logger.get_logger(__name__)
 
 
 def get_arguments() -> tuple:

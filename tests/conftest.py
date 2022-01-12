@@ -1,10 +1,18 @@
 import os
 import pytest
 import shutil
+import logging
+
+
+@pytest.fixture(autouse=True, scope="session")
+def logging_off():
+    logging.disable(logging.CRITICAL)
+
 
 @pytest.fixture
 def folder1() -> str:
     return "./folder1"
+
 
 @pytest.fixture
 def folder2() -> str:
