@@ -2,7 +2,6 @@ import os
 import pytest
 import shutil
 
-
 @pytest.fixture
 def folder1() -> str:
     return "./folder1"
@@ -12,7 +11,7 @@ def folder2() -> str:
     return "./folder2"
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def temp_folders(folder1, folder2):
     for i in (folder1, folder2):
         if os.path.isdir(i):
