@@ -1,12 +1,18 @@
 import argparse
 import os
 import time
-
-import app_logger
 import filecmp
 import shutil
 
-logger = app_logger.get_logger(__name__)
+# import app_logger
+# logger = app_logger.get_logger(__name__)
+
+try:
+    import app_logger
+    logger = app_logger.get_logger(__name__)
+except:
+    import veeam_tt.app_logger
+    logger = veeam_tt.app_logger.get_logger(__name__)
 
 
 def get_arguments() -> tuple:
