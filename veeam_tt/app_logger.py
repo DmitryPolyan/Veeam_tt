@@ -26,4 +26,3 @@ class Logger:
         stream_handler.setLevel(logging.INFO)
         stream_handler.setFormatter(logging.Formatter(log_format))
         return stream_handler
-

@@ -66,9 +66,20 @@ def append_new_content_in_repl(origin_folder: str, original_name: str, repl_fold
         shutil.copy2(f"{origin_folder}/{original_name}", f"{repl_folder}")
 
 
+def check_exist_obj(path: str) -> bool:
+    """Checking for the existence of an object """
+    if os.path.exists(path):
+        return True
+    else:
+        logger.warning(f"File {path} was deleted while processing folders ")
+        return False
+
+
 def del_unnecessary_content(unnecessary_data_names: list, repl_folder: str) -> None:
     """ Removing from replica folder data that is not in the original folder """
     for i in unnecessary_data_names:
+        if not check_exist_obj(f"{repl_folder}/{i}"):
+            continue
         if os.path.isdir(f"{repl_folder}/{i}"):
             logger.info(f"Delete {repl_folder}/{i} folder")
             shutil.rmtree(f"{repl_folder}/{i}", ignore_errors=True)
@@ -82,12 +93,16 @@ def handling_folder_contents(origin_folder: str, repl_folder: str) -> None:
     content_origin_folder = os.listdir(origin_folder)
     content_repl_folder = os.listdir(repl_folder)
     for original_name in content_origin_folder:
+        if not check_exist_obj(f"{origin_folder}/{original_name}"):
+            continue
         if original_name in content_repl_folder:
             content_repl_folder.remove(original_name)
             if os.path.isdir(f"{origin_folder}/{original_name}"):
                 logger.info(f"Checking folder {origin_folder}/{original_name}")
                 handling_folder_contents(f"{origin_folder}/{original_name}", f"{repl_folder}/{original_name}")
             else:
+                if not check_exist_obj(f"{repl_folder}/{original_name}"):
+                    continue
                 if not filecmp.cmp(f"{origin_folder}/{original_name}", f"{repl_folder}/{original_name}", shallow=False):
                     update_repl_content(origin_folder, repl_folder, original_name)
         elif original_name not in content_repl_folder:
@@ -103,11 +118,10 @@ def main():
                 f" log path {log_path}")
     while True:
         handling_folder_contents(origin_folder, repl_folder)
+        logger.info("Synchronization is done")
         time.sleep(refresh_time_period)
         logger.info("Checking restart")
 
 
 if __name__ == '__main__':
     main()
-
-
