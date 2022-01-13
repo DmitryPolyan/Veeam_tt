@@ -27,8 +27,6 @@ def get_arguments() -> tuple:
         if not os.path.isdir(path):
             logger.error("Folder does not exist")
             raise argparse.ArgumentTypeError(f"{path} Folder does not exist")
-        while path[-1] == '/':
-            path = path[:-1]
         return path
 
     def check_refresh_time_period(refresh_time_period: str) -> int:
