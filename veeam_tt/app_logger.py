@@ -5,7 +5,6 @@ log_format = f"%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcN
 
 class Logger:
     def __init__(self, name, log_path):
-        """Logger creation """
         logger = logging.getLogger(name)
         logger.setLevel(logging.INFO)
         logger.addHandler(Logger.file_handler(log_path))
