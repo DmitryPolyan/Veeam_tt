@@ -24,7 +24,7 @@ def get_arguments() -> tuple:
         """Checking a folder """
         if not os.path.isdir(path):
             logger.error("Folder does not exist")
-            raise argparse.ArgumentTypeError("Folder does not exist")
+            raise argparse.ArgumentTypeError(f"{path} Folder does not exist")
         while path[-1] == '/':
             path = path[:-1]
         return path
@@ -53,7 +53,7 @@ def update_repl_content(origin_folder: str, repl_folder: str, original_name: str
     shutil.copy2(f"{origin_folder}/{original_name}", f"{repl_folder}")
 
 
-def append_new_content_int_repl(origin_folder: str, original_name: str, repl_folder: str) -> None:
+def append_new_content_in_repl(origin_folder: str, original_name: str, repl_folder: str) -> None:
     """ Add new data from source folder to replica folder """
     if os.path.isdir(f"{origin_folder}/{original_name}"):
         logger.info(f"Copy folder {origin_folder}/{original_name} to {repl_folder}")
@@ -88,7 +88,7 @@ def handling_folder_contents(origin_folder: str, repl_folder: str) -> None:
                 if not filecmp.cmp(f"{origin_folder}/{original_name}", f"{repl_folder}/{original_name}", shallow=False):
                     update_repl_content(origin_folder, repl_folder, original_name)
         elif original_name not in content_repl_folder:
-            append_new_content_int_repl(origin_folder, original_name, repl_folder)
+            append_new_content_in_repl(origin_folder, original_name, repl_folder)
     del_unnecessary_content(content_repl_folder, repl_folder)
 
 
