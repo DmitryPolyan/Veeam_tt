@@ -8,8 +8,8 @@
 
 Usage example:
 
-../veeam_tt_2022$ python3 veeam_tt/main.py folder1 folder2 20 ./veeam_tt/
+../veeam_tt$ python3 veeam_tt/main.py folder1 folder2 20 ./veeam_tt/
 
 for help:
 
-../veeam_tt_2022$ python3 veeam_tt/main.py -h
+../veeam_tt$ python3 veeam_tt/main.py -h
